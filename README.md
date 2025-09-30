@@ -42,16 +42,11 @@ graph TD
     end
 
     subgraph "Serviços Externos"
-        style GIS fill:#db4437,stroke:#333
-        style NOM fill:#76b82a,stroke:#333
         GIS[Google Identity Services];
         NOM[API Nominatim - OpenStreetMap];
     end
 
     subgraph "Backend & Dados"
-        style API fill:#f4b400,stroke:#333
-        style DB fill:#4285f4,stroke:#333
-        
         App1 -- Salva/Edita --> API[API RESTful - FaithFinderCadastro];
         API -- Geocodifica endereço --> NOM;
         API -- Salva/Consulta --> DB[Banco de Dados MySQL];
@@ -59,11 +54,6 @@ graph TD
     
     App2 -- Busca por endereço --> NOM;
     App2 -- Busca dados --> API;
-
-    linkStyle 0 stroke-width:2px,fill:none,stroke:red;
-    linkStyle 4 stroke-width:2px,fill:none,stroke:green;
-    linkStyle 7 stroke-width:2px,fill:none,stroke:green;
-    linkStyle 8 stroke-width:2px,fill:none,stroke:blue;
 ```
 
 ## 4. Configuração do Projeto e Execução
