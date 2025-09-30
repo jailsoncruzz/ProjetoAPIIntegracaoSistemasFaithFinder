@@ -135,36 +135,37 @@ Para testar os endpoints da API, utilize uma ferramenta como Postman ou Insomnia
 4. Na aba "Params", altere o valor do parâmetro `q` para o termo que deseja buscar.
 5. Clique em "Send" e observe a resposta em JSON no painel inferior.
 
-#### Documentação das Rotas da API
+### Documentação das Rotas da API
+
+Esta seção detalha os endpoints da API interna do FaithFinder, bem como as APIs externas consumidas pelo projeto.
+
+#### API Interna (`FaithFinderCadastro`)
 
 ##### `GET /api/locais`
 
-Retorna uma lista de locais (igrejas ou eventos) com base em filtros de busca.
+[cite_start]Retorna uma lista de locais (igrejas ou eventos) com base em filtros de busca[cite: 17].
 
 * **Método:** `GET`
 * **Endpoint:** `/api/locais`
 * **Parâmetros de Query (Opcionais):**
 
-| Parâmetro | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `q` | string | Termo de busca textual. A API procurará por qualquer palavra deste termo nos campos `nome`, `descricao`, `bairro`, `cidade`, `rua`, `numero` e `estado`. |
-| `lat` | float | Latitude do ponto central da busca por proximidade. **Deve ser usado em conjunto com `lon`.** |
-| `lon` | float | Longitude do ponto central da busca por proximidade. **Deve ser usado em conjunto com `lat`.** |
+| Parâmetro | Tipo   | Descrição                                                                                                                                              |
+| :-------- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `q`       | string | Termo de busca textual. A API procurará por qualquer palavra deste termo nos campos `nome`, `descricao`, `bairro`, `cidade`, `rua`, `numero` e `estado`. |
+| `lat`     | float  | Latitude do ponto central da busca por proximidade. **Deve ser usado em conjunto com `lon`.** |
+| `lon`     | float  | Longitude do ponto central da busca por proximidade. **Deve ser usado em conjunto com `lat`.** |
 
 * **Exemplo de Requisição (Busca textual):**
-
     ```
     GET http://localhost/FaithFinderCadastro/public/api/locais?q=Igreja+Centro
     ```
 
 * **Exemplo de Requisição (Busca por proximidade):**
-
     ```
     GET http://localhost/FaithFinderCadastro/public/api/locais?lat=-3.7298&lon=-38.6602
     ```
 
 * **Resposta de Sucesso (200 OK):**
-
     ```json
     [
         {
@@ -179,7 +180,6 @@ Retorna uma lista de locais (igrejas ou eventos) com base em filtros de busca.
         }
     ]
     ```
-
     *(Nota: o campo `distance` só aparece em buscas por proximidade.)*
 
 ---
@@ -192,18 +192,16 @@ Retorna os detalhes de um local específico.
 * **Endpoint:** `/api/locais/{id}`
 * **Parâmetros de URL:**
 
-| Parâmetro | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `{id}` | integer | O ID único do local a ser retornado. **(Obrigatório)** |
+| Parâmetro | Tipo    | Descrição                                        |
+| :-------- | :------ | :------------------------------------------------- |
+| `{id}`    | integer | O ID único do local a ser retornado. **(Obrigatório)** |
 
 * **Exemplo de Requisição:**
-
     ```
     GET http://localhost/FaithFinderCadastro/public/api/locais/4
     ```
 
 * **Resposta de Sucesso (200 OK):**
-
     ```json
     {
         "id": "4",
@@ -228,7 +226,6 @@ Retorna os detalhes de um local específico.
     ```
 
 * **Resposta de Erro (404 Not Found):**
-
     ```json
     {
         "status": 404,
@@ -238,6 +235,58 @@ Retorna os detalhes de um local específico.
         }
     }
     ```
+---
+
+#### APIs Externas Utilizadas
+
+##### API de Geolocalização: Nominatim (OpenStreetMap)
+
+Utilizada para converter endereços textuais em coordenadas geográficas (latitude e longitude).
+
+* **Método:** `GET`
+* **Endpoint:** `https://nominatim.openstreetmap.org/search`
+* **Parâmetros de Query Principais:**
+
+| Parâmetro | Tipo   | Descrição                                                      |
+| :-------- | :----- | :--------------------------------------------------------------- |
+| `q`       | string | O endereço a ser pesquisado (ex: "Rua X, Cidade Y, Estado Z"). |
+| `format`  | string | O formato da resposta desejado. Usamos `json`.                 |
+
+* **Exemplo de Requisição:**
+    ```
+    GET [https://nominatim.openstreetmap.org/search?q=Avenida+da+Universidade,Fortaleza,CE&format=json&limit=1](https://nominatim.openstreetmap.org/search?q=Avenida+da+Universidade,Fortaleza,CE&format=json&limit=1)
+    ```
+
+* **Exemplo de Resposta de Sucesso (200 OK):**
+    ```json
+    [
+        {
+            "place_id": 12345,
+            "licence": "Data © OpenStreetMap contributors, ODbL 1.0. [http://osm.org/copyright](http://osm.org/copyright)",
+            "osm_type": "way",
+            "osm_id": 67890,
+            "lat": "-3.74025",
+            "lon": "-38.5361",
+            "display_name": "Avenida da Universidade, Benfica, Fortaleza, Ceará, Brasil",
+            "class": "highway",
+            "type": "primary",
+            "importance": 0.6
+        }
+    ]
+    ```
+---
+##### API de Autenticação: Google Identity Services
+
+Utilizada para autenticar os usuários no painel de gestão (`FaithFinderCadastro`) e personalizar a experiência no portal de busca.
+
+* **Protocolo:** OAuth 2.0 / OpenID Connect (OIDC).
+* **Componente Principal:** **Token JWT (JSON Web Token)**.
+* **Descrição do Fluxo:**
+    1.  A aplicação carrega a biblioteca JavaScript do Google.
+    2.  O usuário clica no botão "Sign in with Google" e autoriza o acesso.
+    3.  O servidor do Google retorna um Token JWT para o frontend da aplicação.
+    4.  Este token, que é uma string codificada (ex: `eyJhbGciOi...`), contém as informações do usuário de forma segura.
+    5.  A aplicação backend (`FaithFinderCadastro`) recebe este token, valida sua autenticidade com os servidores do Google e, se válido, cria uma sessão de login para o usuário.
 
 ### Papéis e Responsabilidades da Equipe
 
