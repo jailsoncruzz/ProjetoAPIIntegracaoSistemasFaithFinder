@@ -91,5 +91,4 @@ graph TD
     
     App2 -- Busca por endereço --> NOM;
     App2 -- Busca dados --> API;
-
-end
+```
