@@ -1,0 +1,94 @@
+{
+    "info": {
+        "_postman_id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+        "name": "FaithFinder API",
+        "description": "Coleção de requisições para a API de gestão de igrejas e eventos do projeto FaithFinder.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Listar Todos os Locais",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/locais",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "api",
+                        "locais"
+                    ]
+                },
+                "description": "Retorna uma lista de todos os locais cadastrados, sem nenhum filtro."
+            },
+            "response": []
+        },
+        {
+            "name": "Buscar Locais por Texto",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/locais?q=Igreja",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "api",
+                        "locais"
+                    ],
+                    "query": [
+                        {
+                            "key": "q",
+                            "value": "Igreja",
+                            "description": "Termo de busca. Pode ser nome, bairro, cidade, rua, etc."
+                        }
+                    ]
+                },
+                "description": "Executa uma busca textual por qualquer palavra-chave."
+            },
+            "response": []
+        },
+        {
+            "name": "Buscar Locais por Proximidade",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/api/locais?lat=-3.7298&lon=-38.6602",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "api",
+                        "locais"
+                    ],
+                    "query": [
+                        {
+                            "key": "lat",
+                            "value": "-3.7298",
+                            "description": "Latitude do ponto central da busca."
+                        },
+                        {
+                            "key": "lon",
+                            "value": "-38.6602",
+                            "description": "Longitude do ponto central da busca."
+                        }
+                    ]
+                },
+                "description": "Retorna os locais dentro de um raio de 20km a partir das coordenadas fornecidas."
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost/faithfindercadastro/public",
+            "type": "string",
+            "description": "A URL base da sua API. Altere aqui se o seu ambiente for diferente."
+        }
+    ]
+}
