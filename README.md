@@ -34,30 +34,36 @@ Para uma descrição mais detalhada da interação entre os componentes e as apl
 
 ```mermaid
 graph TD
-    subgraph "Aplicação 1: FaithFinderCadastro (API)"
-        A[Usuário Admin] -- Acessa --> B{Painel de Gestão};
-        B -- Salva/Edita Local --> C[LocaisController];
-        C -- Chama --> D[Nominatim API Externa]
-        D -- Retorna Coordenadas --> C;
-        C -- Salva no --> E[Banco de Dados MySQL];
+    subgraph "Aplicações FaithFinder"
+        A[Usuário Admin] -- Autentica via --> GIS[Google Identity Services];
+        A -- Gerencia Locais --> App1[Painel de Gestão - FaithFinderCadastro];
+        
+        U[Usuário Final] -- Acessa --> App2[Portal de Busca - FaithFinderPortal];
     end
 
-    subgraph "Aplicação 2: Portal de Busca (Frontend)"
-        F[Usuário Final] -- Busca por endereço --> G{Portal de Busca};
-        G -- Chama --> D;
-        D -- Retorna Coordenadas --> G;
-        G -- Chama API Interna com Coordenadas --> H[API RESTful];
+    subgraph "Serviços Externos"
+        style GIS fill:#db4437,stroke:#333
+        style NOM fill:#76b82a,stroke:#333
+        GIS[Google Identity Services];
+        NOM[API Nominatim - OpenStreetMap];
     end
 
-    subgraph "API Pública"
-       H -- Consulta --> E;
-       E -- Retorna Dados --> H;
-       H -- Envia JSON --> G;
+    subgraph "Backend & Dados"
+        style API fill:#f4b400,stroke:#333
+        style DB fill:#4285f4,stroke:#333
+        
+        App1 -- Salva/Edita --> API[API RESTful - FaithFinderCadastro];
+        API -- Geocodifica endereço --> NOM;
+        API -- Salva/Consulta --> DB[Banco de Dados MySQL];
     end
     
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style F fill:#ccf,stroke:#333,stroke-width:2px
-end
+    App2 -- Busca por endereço --> NOM;
+    App2 -- Busca dados --> API;
+
+    linkStyle 0 stroke-width:2px,fill:none,stroke:red;
+    linkStyle 4 stroke-width:2px,fill:none,stroke:green;
+    linkStyle 7 stroke-width:2px,fill:none,stroke:green;
+    linkStyle 8 stroke-width:2px,fill:none,stroke:blue;
 ```
 
 ## 4. Configuração do Projeto e Execução
