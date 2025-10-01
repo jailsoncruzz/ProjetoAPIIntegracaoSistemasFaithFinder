@@ -74,7 +74,7 @@ Siga as instruções abaixo para configurar e executar a aplicação da API em u
     git clone https://github.com/jailsoncruzz/ProjetoAPIIntegracaoSistemasFaithFinder.git FaithFinderCadastro
     ```
 
-2. **Instalar Dependências:**
+2. **Instalar Dependências: (É necessario mover as duas pastas [faithfindercadastro / faithfinderportal] para a pasta raiz htdocs ou www)**
     Navegue até a pasta do projeto e instale as dependências do PHP com o Composer.
 
     ```bash
