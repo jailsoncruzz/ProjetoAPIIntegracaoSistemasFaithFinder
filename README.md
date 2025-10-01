@@ -101,7 +101,7 @@ Siga as instruções abaixo para configurar e executar a aplicação da API em u
     * Configure a `baseURL` no arquivo `app/Config/App.php` para corresponder à sua estrutura de pastas no XAMPP:
 
         ```php
-        public string $baseURL = 'http://localhost/FaithFinderCadastro/';
+        http://localhost/faithfindercadastro/public';
         ```
 
 4. **Criar Banco e as Tabelas do Banco:**
