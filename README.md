@@ -112,7 +112,7 @@ Siga as instruções abaixo para configurar e executar a aplicação da API em u
     ```
 
 5. **Executar a Aplicação:**
-    * Acesse o painel de gestão através do seu servidor XAMPP no endereço: `http://localhost/FaithFinderCadastro/public/`
+    * Acesse o painel de gestão através do seu servidor XAMPP no endereço: `http://localhost/faithfindercadastro/public/index.php/login`
     * (Opcional) Você pode usar o servidor de desenvolvimento do CodeIgniter, que é mais simples para testes:
 
         ```bash
