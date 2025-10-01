@@ -112,15 +112,9 @@ Siga as instruções abaixo para configurar e executar a aplicação da API em u
     ```
 
 5. **Executar a Aplicação:**
+    * Toda a aplicação foi projetada e testada apenas pelo servidor XAMPP, os testes não foram aplicados pelo php spark server, por conta disso pode conter instabilidade quanto ao spark server.
+    * 
     * Acesse o painel de gestão através do seu servidor XAMPP no endereço: `http://localhost/faithfindercadastro/public/index.php/login`
-    * (Opcional) Você pode usar o servidor de desenvolvimento do CodeIgniter, que é mais simples para testes:
-
-        ```bash
-        php spark serve
-        ```
-
-    * Neste caso, a aplicação estará disponível em `http://localhost:8080`.
-
 ---
 
 ### 5. Documentação e Execução via Postman
