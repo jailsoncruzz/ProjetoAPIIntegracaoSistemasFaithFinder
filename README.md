@@ -78,12 +78,12 @@ Siga as instruções abaixo para configurar e executar a aplicação da API em u
     Navegue até a pasta do projeto e instale as dependências do PHP com o Composer.
 
     ```bash
-    cd src/FaithFinderCadastro
+    cd FaithFinderCadastro
     composer install
     ```
 
     ```bash
-    cd src/FaithFinderPortal
+    cd FaithFinderPortal
     composer install
     ```
 
